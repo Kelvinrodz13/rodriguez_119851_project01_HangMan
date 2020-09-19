@@ -7,12 +7,61 @@ def Search(word='',selected_Word='',i=0):
     else:
         return False
 
-def FindWord(letter,word):
-    for i in word:
-        if letter[0] == word[i]:
-            return True
-        else:
-            return False
+
+def drawHang(att=0,ledge=Point(0,0),win=GraphWin): # function to create the hanged man
+
+    ledge.move(0,-10)
+    head = Circle(ledge,10)
+
+    torso_p1 = head.getCenter()
+    torso_p1.move(0,-10)
+
+    torso_p2 = Point(torso_p1.getX(),300)
+    #torso_p2.move()
+
+    torso = Line(torso_p1,torso_p2)
+
+    left_p1 = torso.getCenter()
+    left_p1.move(0,20)
+    left_p2 = left_p1.clone()
+    left_p2.move(-30,-30)
+    left_arm = Line(left_p1,left_p2)
+
+    right_p1 = left_arm.getP1()
+    right_p2 = left_arm.getP2()
+
+    right_p2.move(60,0)
+
+    right_arm = Line(right_p1,right_p2)
+
+    centerLeg = torso.getP2()
+    left_leg = torso.getP2()
+
+    left_leg.move(-30,-30)
+    right_leg = left_leg.clone()
+    right_leg.move(60,0)
+
+    LegLineL = Line(centerLeg,left_leg)
+    LegLineR = Line(centerLeg,right_leg)
+
+
+
+    if att == 1:
+        head.setFill('black')
+        head.draw(win)
+    elif att ==2:
+        torso.draw(win)
+    elif att == 3:
+        left_arm.draw(win)
+    elif att == 4:
+        right_arm.draw(win)
+    elif att == 5:
+         LegLineL.draw(win)
+    elif att == 6:
+        LegLineR.draw(win)
+
+
+
 
 words = ['nun','sky','dog','cat','fox','gum','die','gun','fun','car','ray']
 dash = list('___')
@@ -24,7 +73,7 @@ randomNum = random.randint(0,10)
 
 selectedWord = words[randomNum]
 
-title_str = "GUESS THE WORD OR YOUR FRIEND DIES!\nYOU HAVE 5 FAIL ATTEMPTS\n\n"
+title_str = "GUESS THE WORD OR YOUR FRIEND DIES!\nYOU HAVE 6 FAIL ATTEMPTS\nCLICK ANYWHERE TO START\n"
 
 attempts = 0
 
@@ -48,18 +97,31 @@ hangPost_ledge.draw(win)
 centerCol = hangPost_Col.getCenter()
 centerCol.move(-100,0)
 
-guessWord = Text(centerCol, 'test')
-guessWord.draw(win)
+#guessWord = Text(centerCol,'none')
+#guessWord.draw(win)
+#Text()
 
 wordCount = len(selectedWord)
 
 finalCompare = "lorem"
 
-while attempts < 5 and selectedWord != finalCompare:
+
+
+win.getMouse()
+
+while attempts < 6 and selectedWord != finalCompare:
+
+    attempt_str = "You have {} attempts left".format(abs(attempts-6))
+
+    Title.setText(attempt_str)
 
     textEntry = Entry(Point(300,50),1)
     textEntry.setFill(color_rgb(167, 197, 253))
-    textEntry.draw(win)
+    if attempts < 7:
+
+        textEntry.draw(win)
+    else:
+        textEntry.undraw()
 
     clickWord = Text(Point(300,25), 'Click anywhere to enter guess!')
     clickWord.draw(win)
@@ -68,6 +130,11 @@ while attempts < 5 and selectedWord != finalCompare:
     clickWord.undraw()
 
     user_Guess = textEntry.getText()
+
+    while user_Guess == '':
+        win.getMouse() #click function as enter
+        clickWord.undraw()
+        user_Guess = textEntry.getText()
 
     found = str.find(selectedWord,user_Guess)
 
@@ -83,11 +150,13 @@ while attempts < 5 and selectedWord != finalCompare:
                     dash[i] = user_Guess
     else:
         attempts += 1
+        drawHang(attempts,hangPost_ledge.getP2(),win)
     
-    guessWord.undraw()
+    #guessWord.undraw()
 
-    guessWord = Text(centerCol, dash)
-    guessWord.draw(win)
+   #guessWord = Text(centerCol, dash)
+    #guessWord.setText(dash)
+    #guessWord.draw(win)
 
     finalCompare= "".join(dash)
 
@@ -96,8 +165,15 @@ while attempts < 5 and selectedWord != finalCompare:
     userBox.draw(win)
 
 
-            
+attempt_str = "You have {} attempts left".format(abs(attempts-6))
 
+Title.setText(attempt_str)
+textEntry.undraw()
+
+gameOver_str = 'You lost the game!, your word was: {}'.format(selectedWord)
+
+clickWord.setText(gameOver_str)
+clickWord.draw(win)
 win.getMouse()
 win.close()
 
