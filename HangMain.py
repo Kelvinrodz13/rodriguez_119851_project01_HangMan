@@ -1,14 +1,14 @@
-from HangClass import *
+from HangClass import*
 from graphics import *
 import random
 
 def CreateWordFile(fileName):
-    data = open(fileName,'x')
-    wordCount = input("How many word do you wish to add?: ")
+    data = open(fileName,)
+    wordCount = int(input("How many word do you wish to add?: "))
     wordList = list()
 
-    for i in wordCount:
-        wordList.append(input("Enter word: "))
+    for i in range(wordCount):
+        wordList.append(input("Enter word: ") + '\n')
     
     data.writelines(wordList)
 
@@ -19,7 +19,7 @@ def ReadWordFile(fileName):
     wordList = list()
 
     for lines in data.readlines():
-        for words in lines:
+        for words in lines.split():
             wordList.append(words)
     
     return wordList
@@ -29,9 +29,9 @@ def main():
 
     #words = ['nun','sky','dog','cat','fox','gum','die','gun','fun','car','ray']
 
-    fileName = input('Enter the file name for word list >> ')
+    fileName = "WordFile.txt"
 
-    CreateWordFile(fileName)
+    #CreateWordFile(fileName)
 
     words = ReadWordFile(fileName) 
 
@@ -40,13 +40,13 @@ def main():
     win = GraphWin('HangMan',600,600)
     win.setCoords(0,0,600,600)
 
-    randomNum = random.randint(0,10)
+    randomNum = random.randint(1,len(words))
 
     selectedWord = words[randomNum]
 
     dash = list('_' * len(selectedWord))
 
-    title_str = "GUESS THE WORD OR YOUR FRIEND DIES!\nYOU HAVE 6 FAIL ATTEMPTS\nCLICK ANYWHERE TO START\n"
+    title_str = "GUESS THE WORD OR YOUR FRIEND DIES!\nYOU HAVE {} FAIL ATTEMPTS\nCLICK ANYWHERE TO START\n".format(7)
 
     attempts = 0
 
@@ -82,8 +82,8 @@ def main():
 
     win.getMouse()
 
-    game = Hman()
-    game.setWord(selectedWord)
+    game = Hman(selectedWord)
+    #game.setWord(selectedWord)
 
     while game.getUserAtt() > 0 and selectedWord != finalCompare:
 
@@ -146,3 +146,6 @@ def main():
     clickWord.draw(win)
     win.getMouse()
     win.close()
+
+
+main()

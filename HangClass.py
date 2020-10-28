@@ -1,6 +1,7 @@
 
 class Hman:
-    def __init__(self, aWord, userAtt=6):
+    import graphics
+    def __init__(self, aWord, userAtt=7):
         self.word = aWord
         self.userAtt = userAtt
 
@@ -14,10 +15,10 @@ class Hman:
         return self.userAtt
 
     def setUserAtt(self, aTT):
-        if (aTT > 0):
-	    self.userAtt = aTT
-	else:
-		self.userAtt = 8
+        if(aTT > 0):
+            self.userAtt = aTT
+        else:
+            self.userAtt = 7
 
     def Search(self, word='', selected_Word='', i=0):
         if word[0] == selected_Word[i]:
@@ -29,7 +30,7 @@ class Hman:
         self.userAtt -= 1
 
     # function to create the hanged man
-    def drawHang(self, att=0, ledge=Point(0, 0), win=GraphWin):
+    def drawHang(self, att=0, ledge=graphics.Point(0, 0), win=graphics.GraphWin):
         import graphics
         ledge.move(0, -10)
         head = graphics.Circle(ledge, 10)
