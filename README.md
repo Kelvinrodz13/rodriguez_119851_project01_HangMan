@@ -13,3 +13,10 @@ Also there will be improvements to the background.
 A possible feature to add difficulty is to make it a timed activity.
 
 This code and reference code is created by Kelvin Rodriguez Puello, from PUPR
+
+*NEW UPDATE*
+
+Two new branches were created. 
+Branch B only has function and update code while Branch C has a class implementationn of HangMan.
+
+The game will function with different type of word lenghts allowing for more word diversity and difficulty.
