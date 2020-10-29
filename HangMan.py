@@ -71,7 +71,7 @@ def CreateWordFile(fileName):
     wordList = list()
 
     for i in wordCount:
-        wordList.append(input("Enter word: "))
+        wordList.append(input("Enter word: ")+'\n')
     
     data.writelines(wordList)
 
@@ -82,7 +82,7 @@ def ReadWordFile(fileName):
     wordList = list()
 
     for lines in data.readlines():
-        for words in lines:
+        for words in lines.split():
             wordList.append(words)
     
     return wordList
@@ -91,26 +91,23 @@ def ReadWordFile(fileName):
 
 def main():
 
-    #words = ['nun','sky','dog','cat','fox','gum','die','gun','fun','car','ray']
+    fileName = 'WordFile.txt'
 
-    fileName = input('Enter the file name for word list >> ')
-
-    CreateWordFile(fileName)
+    #CreateWordFile(fileName)
 
     words = ReadWordFile(fileName) 
 
-    
 
     win = GraphWin('HangMan',600,600)
     win.setCoords(0,0,600,600)
 
-    randomNum = random.randint(0,10)
+    randomNum = random.randint(0,len(words))
 
     selectedWord = words[randomNum]
 
     dash = list('_' * len(selectedWord))
 
-    title_str = "GUESS THE WORD OR YOUR FRIEND DIES!\nYOU HAVE 6 FAIL ATTEMPTS\nCLICK ANYWHERE TO START\n"
+    title_str = "GUESS THE WORD OR YOUR FRIEND DIES!\nYOU HAVE {} FAIL ATTEMPTS\nCLICK ANYWHERE TO START\n(You can only enter letters)\n".format(7)
 
     attempts = 0
 
@@ -146,7 +143,9 @@ def main():
 
     win.getMouse()
 
-    while attempts < 6 and selectedWord != finalCompare:
+    userBox = Text(Point(300,150),'')
+
+    while attempts < 7 and selectedWord != finalCompare:
 
         attempt_str = "You have {} attempts left".format(abs(attempts-6))
 
@@ -168,7 +167,7 @@ def main():
 
         user_Guess = textEntry.getText()
 
-        while user_Guess == '':
+        while user_Guess == '' or len(user_Guess) > 1:
             win.getMouse() #click function as enter
             clickWord.undraw()
             user_Guess = textEntry.getText()
@@ -192,7 +191,8 @@ def main():
         finalCompare= "".join(dash)
 
 
-        userBox = Text(Point(300,150), dash)
+        userBox.setText(dash)
+        userBox.undraw()
         userBox.draw(win)
 
 
@@ -201,10 +201,14 @@ def main():
     Title.setText(attempt_str)
     textEntry.undraw()
 
-    gameOver_str = 'You lost the game!, your word was: {}'.format(selectedWord)
+    if(finalCompare != selectedWord):
+        gameOver_str = 'You lost the game!, your word was: {}'.format(selectedWord)
+    else:
+        gameOver_str = 'You have won!'
 
     clickWord.setText(gameOver_str)
     clickWord.draw(win)
     win.getMouse()
     win.close()
 
+main()

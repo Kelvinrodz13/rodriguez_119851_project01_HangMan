@@ -1,0 +1,10 @@
+cat
+dog
+president
+laptop
+coding
+airplane
+wallet
+computer
+phone
+vase
