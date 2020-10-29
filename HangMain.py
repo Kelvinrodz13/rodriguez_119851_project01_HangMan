@@ -27,11 +27,9 @@ def ReadWordFile(fileName):
 
 def main():
 
-    #words = ['nun','sky','dog','cat','fox','gum','die','gun','fun','car','ray']
+    
 
     fileName = "WordFile.txt"
-
-    #CreateWordFile(fileName)
 
     words = ReadWordFile(fileName) 
 
@@ -40,7 +38,7 @@ def main():
     win = GraphWin('HangMan',600,600)
     win.setCoords(0,0,600,600)
 
-    randomNum = random.randint(1,len(words))
+    randomNum = random.randint(0,len(words)-1)
 
     selectedWord = words[randomNum]
 
@@ -85,13 +83,15 @@ def main():
     game = Hman(selectedWord)
     #game.setWord(selectedWord)
 
+    userBox = Text(Point(300,150),'')
+
     while game.getUserAtt() > 0 and selectedWord != finalCompare:
 
         attempt_str = "You have {} attempts left".format(abs(game.getUserAtt()))
 
         Title.setText(attempt_str)
 
-        textEntry = Entry(Point(300,50),1)
+        textEntry = Entry(Point(300,100),2)
         textEntry.setFill(color_rgb(167, 197, 253))
         if attempts < 7:
 
@@ -131,17 +131,21 @@ def main():
         finalCompare= "".join(dash)
 
 
-        userBox = Text(Point(300,150), dash)
+        
+        userBox.setText(dash)
+        userBox.undraw()
         userBox.draw(win)
-
 
     attempt_str = "You have {} attempts left".format(abs(game.getUserAtt()))
 
     Title.setText(attempt_str)
     textEntry.undraw()
 
-    gameOver_str = 'You lost the game!, your word was: {}'.format(selectedWord)
-
+    if(finalCompare != selectedWord):
+        gameOver_str = 'You lost the game!, your word was: {}'.format(selectedWord)
+    else:
+        gameOver_str = 'You have won!'
+    
     clickWord.setText(gameOver_str)
     clickWord.draw(win)
     win.getMouse()
